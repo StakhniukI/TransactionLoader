@@ -16,4 +16,4 @@ Then please trigger Endpoint http://localhost:8080/ethereum/loadTransactions to 
 
 
 and Then go to MongoDB Compass to see result 
-!!! (Transactions Collections IN ether_txs)
+!!! (Transactions Collections IN ether_txs database)
