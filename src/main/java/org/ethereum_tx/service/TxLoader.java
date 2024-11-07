@@ -1,21 +1,26 @@
 package org.ethereum_tx.service;
 
+import com.google.gson.Gson;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoCollection;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.ethereum_tx.repository.TransactionRepository;
+import org.bson.Document;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterNumber;
+import org.web3j.protocol.core.methods.response.Transaction;
 import org.web3j.protocol.http.HttpService;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @ApplicationScoped
 public class TxLoader {
 
     @Inject
-    TransactionRepository transactionRepository;
+    MongoClient mongoClient;
 
     Logger LOG = Logger.getLogger(TxLoader.class.getName());
     String CHAIN_URL = "https://eth-archival.rpc.grove.city/v1/a1f551c9";
@@ -27,12 +32,19 @@ public class TxLoader {
 
         Web3j web3 = Web3j.build(new HttpService(CHAIN_URL));
 
-        for (long i = transactionCountForBlock.longValue(); i == 0; i--) {
-            org.web3j.protocol.core.methods.response.Transaction transaction = web3.ethGetTransactionByBlockNumberAndIndex(
+        for (long i = transactionCountForBlock.longValue() - 1; i >= 0; i--) {
+            Optional<Transaction> transactionOptional = web3.ethGetTransactionByBlockNumberAndIndex(
                             new DefaultBlockParameterNumber(lastBlock), BigInteger.valueOf(i)).send()
-                    .getTransaction().get();
+                    .getTransaction();
 
-            transactionRepository.persist(transaction);
+            if(transactionOptional.isPresent()) {
+                Transaction transaction = transactionOptional.get();
+                System.out.println(transaction.getTransactionIndex());
+                Gson gson = new Gson();
+                String json = gson.toJson(transaction);
+                Document doc = Document.parse(json);
+                getCollection().insertOne(doc);
+            }
         }
     }
 
@@ -65,5 +77,9 @@ public class TxLoader {
             e.printStackTrace();
         }
         return transactionCountForBlock;
+    }
+
+    private MongoCollection getCollection(){
+        return mongoClient.getDatabase("ether_txs").getCollection("transactions");
     }
 }

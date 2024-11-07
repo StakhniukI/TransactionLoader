@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="753075ca-d3c0-4d71-9110-1588206bc7ce" name="Changes" comment="added EtherTx and Mongo config">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/ethereum_tx/repository/TransactionRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/ethereum_tx/db/EtherTx.java" beforeDir="false" />
+    <list default="true" id="753075ca-d3c0-4d71-9110-1588206bc7ce" name="Changes" comment="added mvnw and fixed logic">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/ethereum_tx/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ethereum_tx/repository/TransactionRepository.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/ethereum_tx/service/TxLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ethereum_tx/service/TxLoader.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,9 +53,10 @@
     "Application.org.ethereum_tx.Main.executor": "Run",
     "Maven.Ethereum_tx [install].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/ivan/projects/Ethereum_tx/src/main/java/org/EthereumTx",
+    "last_opened_file_path": "/Users/ivan/projects/Ethereum_tx",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
@@ -63,6 +65,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src/main/java/org/EthereumTx" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -70,21 +73,8 @@
       <recent name="org.EthereumTx" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.org.ethereum_tx.Main">
+  <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.EthereumTx.Main" />
-      <module name="Ethereum_tx" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.ethereum_tx.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="org.ethereum_tx.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.ethereum_tx.Main" />
       <module name="Ethereum_tx" />
       <extension name="coverage">
@@ -99,7 +89,6 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.org.ethereum_tx.Main" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main" />
       </list>
@@ -138,7 +127,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730980613398</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="added mvnw and fixed logic">
+      <option name="closed" value="true" />
+      <created>1730984799765</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1730984799765</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -168,6 +165,7 @@
     <MESSAGE value="initial commit" />
     <MESSAGE value="added correct quarkus dependencies" />
     <MESSAGE value="added EtherTx and Mongo config" />
-    <option name="LAST_COMMIT_MESSAGE" value="added EtherTx and Mongo config" />
+    <MESSAGE value="added mvnw and fixed logic" />
+    <option name="LAST_COMMIT_MESSAGE" value="added mvnw and fixed logic" />
   </component>
 </project>
