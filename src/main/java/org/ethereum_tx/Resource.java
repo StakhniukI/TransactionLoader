@@ -4,6 +4,8 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import org.ethereum_tx.service.TxLoader;
 
+import java.io.IOException;
+
 
 @Path("/ethereum")
 public class Resource {
@@ -18,5 +20,16 @@ public class Resource {
 
 
 //        return null;
+    }
+
+    @GET
+    @Path("/loadTransactions")
+    public void loadTransactions() {
+        try {
+            txLoader.loadTransactions();
+        } catch (IOException e) {
+            System.out.println("Problem with loading transaction");
+            throw new RuntimeException(e);
+        }
     }
 }
