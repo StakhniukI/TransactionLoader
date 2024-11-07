@@ -1,13 +1,19 @@
 # TransactionLoader
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+For run this project: 
+Please install - Java 17,
+and MongoDB - 
+```shell script
+brew install --cask gcollazo-mongodb
+```
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
-
-## Running the application in dev mode
-
-You can run your application in dev mode that enables live coding using:
-
+then Please run build
 ```shell script
 ./mvnw compile quarkus:dev
 ```
+
+Then please trigger Endpoint http://localhost:8080/ethereum/loadTransactions to start loading transactions for latest block;
+
+
+and Then go to MongoDB Compass to see result 
+!!! (Transactions Collections IN ether_txs)

@@ -27,7 +27,7 @@ public class TxLoader {
 
     public void loadTransactions() throws IOException {
 
-        BigInteger lastBlock = getLastBlock();
+        BigInteger lastBlock = getLatestBlock();
         BigInteger transactionCountForBlock = getBlockTransactionCount(lastBlock);
 
         Web3j web3 = Web3j.build(new HttpService(CHAIN_URL));
@@ -48,7 +48,7 @@ public class TxLoader {
         }
     }
 
-    private BigInteger getLastBlock() throws IOException {
+    private BigInteger getLatestBlock() throws IOException {
 
         Web3j web3 = Web3j.build(new HttpService(CHAIN_URL));
 
