@@ -43,7 +43,9 @@ public class TxLoader {
 //        lastTransactionSavedDocument.get()
 
 
-        ExecutorService executor = Executors.newCachedThreadPool();
+        int threads = Runtime.getRuntime().availableProcessors();
+        System.out.println("Available threads: " + threads);
+        ExecutorService executor = Executors.newFixedThreadPool(threads);
         executor.submit(() -> {
             MongoCollection txCollection = getTransactionCollection(lastBlock);
             List<Document> txInBlockList = new ArrayList<>();
