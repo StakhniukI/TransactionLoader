@@ -36,10 +36,12 @@ public class TxLoader {
 
         Web3j web3 = Web3j.build(new HttpService(CHAIN_URL));
 
-        ExecutorService executor = Executors.newCachedThreadPool();
+//        Document lastTransactionSavedDocument = (Document) getLastTransactionNumberForBlockLoaded(lastBlock);
+//        lastTransactionSavedDocument.get()
 
+        ExecutorService executor = Executors.newCachedThreadPool();
         executor.submit(() -> {
-            for (long i = transactionCountForBlock.longValue() - 1; i >= 0; i--) {
+            for (long i = 0; i <= transactionCountForBlock.longValue(); i++) {
                 Optional<Transaction> transactionOptional = null;
                 try {
                     transactionOptional = web3.ethGetTransactionByBlockNumberAndIndex(
