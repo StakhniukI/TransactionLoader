@@ -13,6 +13,8 @@ import org.web3j.protocol.http.HttpService;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -41,9 +43,10 @@ public class TxLoader {
 //        lastTransactionSavedDocument.get()
 
 
-        ExecutorService executor = Executors.newCachedThreadPool();
-        executor.submit(() -> {
+//        ExecutorService executor = Executors.newCachedThreadPool();
+//        executor.submit(() -> {
             MongoCollection txCollection = getTransactionCollection(lastBlock);
+            List<Document> txInBlockList = new ArrayList<>();
             for (long i = 0; i <= transactionCountForBlock.longValue(); i++) {
                 Optional<Transaction> transactionOptional = null;
                 try {
@@ -60,10 +63,11 @@ public class TxLoader {
                     Gson gson = new Gson();
                     String json = gson.toJson(transaction);
                     Document doc = Document.parse(json);
-                    txCollection.insertOne(doc);
+                    txInBlockList.add(doc);
                 }
             }
-        });
+            txCollection.insertMany(txInBlockList);
+//        });
 //
     }
 
