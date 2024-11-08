@@ -18,6 +18,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
+import static com.mongodb.client.model.Aggregates.limit;
 import static com.mongodb.client.model.Filters.eq;
 
 @ApplicationScoped
@@ -36,11 +37,13 @@ public class TxLoader {
 
         Web3j web3 = Web3j.build(new HttpService(CHAIN_URL));
 
-//        Document lastTransactionSavedDocument = (Document) getLastTransactionNumberForBlockLoaded(lastBlock);
+//        Document lastTransactionSavedDocument = getLastLoadedTransactionNumberForBlock(lastBlock);
 //        lastTransactionSavedDocument.get()
+
 
         ExecutorService executor = Executors.newCachedThreadPool();
         executor.submit(() -> {
+            MongoCollection txCollection = getTransactionCollection(lastBlock);
             for (long i = 0; i <= transactionCountForBlock.longValue(); i++) {
                 Optional<Transaction> transactionOptional = null;
                 try {
@@ -57,12 +60,11 @@ public class TxLoader {
                     Gson gson = new Gson();
                     String json = gson.toJson(transaction);
                     Document doc = Document.parse(json);
-                    getTransactionCollection().insertOne(doc);
+                    txCollection.insertOne(doc);
                 }
             }
         });
 //
-
     }
 
     private BigInteger getLatestBlock() throws IOException {
@@ -96,13 +98,12 @@ public class TxLoader {
         return transactionCountForBlock;
     }
 
-    private Object getLastTransactionNumberForBlockLoaded(BigInteger blockNumber){
-        return getTransactionLoadedCollection().find(eq("blockNumber", blockNumber)).first();
+//    private Object getLastTransactionNumberForBlockLoaded(BigInteger blockNumber){
+//        return getTransactionCollection().find().sort({:-1}).limit(1);
+//    }
+
+    private MongoCollection getTransactionCollection(BigInteger blockNumber){
+        return mongoClient.getDatabase("ether_txs").getCollection("transactions_"+ blockNumber);
     }
-    private MongoCollection getTransactionCollection(){
-        return mongoClient.getDatabase("ether_txs").getCollection("transactions");
-    }
-    private MongoCollection getTransactionLoadedCollection(){
-        return mongoClient.getDatabase("ether_txs").getCollection("transaction_loaded");
-    }
+
 }
