@@ -43,8 +43,8 @@ public class TxLoader {
 //        lastTransactionSavedDocument.get()
 
 
-//        ExecutorService executor = Executors.newCachedThreadPool();
-//        executor.submit(() -> {
+        ExecutorService executor = Executors.newCachedThreadPool();
+        executor.submit(() -> {
             MongoCollection txCollection = getTransactionCollection(lastBlock);
             List<Document> txInBlockList = new ArrayList<>();
             for (long i = 0; i <= transactionCountForBlock.longValue(); i++) {
@@ -59,7 +59,7 @@ public class TxLoader {
 
                 if (transactionOptional.isPresent()) {
                     Transaction transaction = transactionOptional.get();
-                    System.out.println(transaction.getTransactionIndex());
+                    System.out.println("Block Number: " + lastBlock + " Transaction Number: " + transaction.getTransactionIndex());
                     Gson gson = new Gson();
                     String json = gson.toJson(transaction);
                     Document doc = Document.parse(json);
@@ -67,7 +67,7 @@ public class TxLoader {
                 }
             }
             txCollection.insertMany(txInBlockList);
-//        });
+        });
 //
     }
 
