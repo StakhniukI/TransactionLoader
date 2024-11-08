@@ -12,7 +12,7 @@ then Please run build
 ./mvnw compile quarkus:dev
 ```
 
-Then please trigger Endpoint http://localhost:8080/ethereum/loadTransactions to start loading transactions for latest block;
+Then please trigger Endpoint http://localhost:8080/ethereum/loadTransactions to start loading transactions from latest block;
 
 
 and Then go to MongoDB Compass to see result 
