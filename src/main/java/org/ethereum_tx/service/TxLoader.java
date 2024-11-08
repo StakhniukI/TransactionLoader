@@ -42,37 +42,41 @@ public class TxLoader {
 //        Document lastTransactionSavedDocument = getLastLoadedTransactionNumberForBlock(lastBlock);
 //        lastTransactionSavedDocument.get()
 
-
+        //Creation optimal number of Concurrent threads for load Transactions
         int threads = Runtime.getRuntime().availableProcessors();
         System.out.println("Available threads: " + threads);
         ExecutorService executor = Executors.newFixedThreadPool(threads);
-        executor.submit(() -> {
-            MongoCollection txCollection = getTransactionCollection(lastBlock);
-            List<Document> txInBlockList = new ArrayList<>();
-            for (long i = 0; i <= transactionCountForBlock.longValue(); i++) {
-                Optional<Transaction> transactionOptional = null;
-                try {
-                    transactionOptional = web3.ethGetTransactionByBlockNumberAndIndex(
-                                    new DefaultBlockParameterNumber(lastBlock), BigInteger.valueOf(i)).send()
-                            .getTransaction();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+        for (long y = lastBlock.longValue(); y >= 0; y--) {
 
-                if (transactionOptional.isPresent()) {
-                    Transaction transaction = transactionOptional.get();
-                    System.out.println("Block Number: " + lastBlock + " Transaction Number: " + transaction.getTransactionIndex());
-                    Gson gson = new Gson();
-                    String json = gson.toJson(transaction);
-                    Document doc = Document.parse(json);
-                    txInBlockList.add(doc);
+            //value for currentBlock
+            BigInteger currentBlock = new BigInteger(String.valueOf(y));
+            executor.submit(() -> {
+                MongoCollection txCollection = getTransactionCollection(currentBlock);
+                List<Document> txInBlockList = new ArrayList<>();
+                for (long i = 0; i <= transactionCountForBlock.longValue(); i++) {
+                    Optional<Transaction> transactionOptional = null;
+                    try {
+                        transactionOptional = web3.ethGetTransactionByBlockNumberAndIndex(
+                                        new DefaultBlockParameterNumber(currentBlock), BigInteger.valueOf(i)).send()
+                                .getTransaction();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    if (transactionOptional.isPresent()) {
+                        Transaction transaction = transactionOptional.get();
+                        System.out.println("Block Number: " + currentBlock + " Transaction Number: " + transaction.getTransactionIndex());
+                        Gson gson = new Gson();
+                        String json = gson.toJson(transaction);
+                        Document doc = Document.parse(json);
+                        txInBlockList.add(doc);
+                    }
                 }
-            }
-            txCollection.insertMany(txInBlockList);
-        });
+                txCollection.insertMany(txInBlockList);
+            });
 //
+        }
     }
-
     private BigInteger getLatestBlock() throws IOException {
 
         Web3j web3 = Web3j.build(new HttpService(CHAIN_URL));
